@@ -50,6 +50,5 @@ public class DataHelper {
         return balance + new Random().nextInt(balance) + 1;
     }
 
-
 }
 

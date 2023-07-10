@@ -1,19 +1,12 @@
 package ru.netology.page.test;
 
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.netology.page.data.DataHelper;
 import ru.netology.page.page.DashboardPage;
 import ru.netology.page.page.LoginPage;
 
-import java.time.Duration;
-
-import static com.codeborne.selenide.Condition.exactText;
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -48,18 +41,22 @@ public class AuthTest {
         assertEquals(expectedBalanceSecondCard, actualBalanceSecondCard);
     }
 
-//    @Test
-//    void shouldTransferError() {
-//        var firstCardInfo = DataHelper.getFirstCardInfo();
-//        var secondCardInfo = DataHelper.getSecondCardInfo();
-//        var firstCardBalance = dashboardPage.getCardBalance(0);
-//        var secondCardBalance = dashboardPage.getCardBalance(1);
-//        var amount = DataHelper.generaleInvalidAmount(firstCardBalance);
-//        var expectedBalanceFirstCard = firstCardBalance - amount;
-//        var expectedBalanceSecondCard = secondCardBalance + amount;
-//        var transferPage = dashboardPage.selectCardForTransfer(secondCardInfo);
-//        dashboardPage = transferPage.errorMessage(String.valueOf(amount), firstCardInfo);
-//
-//    }
+    @Test
+    void shouldTransferError() {
+        var firstCardInfo = DataHelper.getFirstCardInfo();
+        var secondCardInfo = DataHelper.getSecondCardInfo();
+        var firstCardBalance = dashboardPage.getCardBalance(0);
+        var secondCardBalance = dashboardPage.getCardBalance(1);
+        var amount = DataHelper.generaleInvalidAmount(firstCardBalance);
+        var expectedBalanceFirstCard = firstCardBalance - amount;
+        var expectedBalanceSecondCard = secondCardBalance + amount;
+        var transferPage = dashboardPage.selectCardForTransfer(secondCardInfo);
+        transferPage.makeTransfer(String.valueOf(amount), firstCardInfo);
+        transferPage.errorMessage("Недостаточно денежных средств");
+        var actualBalanceFirstCard = dashboardPage.getCardBalance(0);
+        var actualBalanceSecondCard = dashboardPage.getCardBalance(1);
+        assertEquals(expectedBalanceFirstCard, actualBalanceFirstCard);
+        assertEquals(expectedBalanceSecondCard, actualBalanceSecondCard);
+    }
 }
 
